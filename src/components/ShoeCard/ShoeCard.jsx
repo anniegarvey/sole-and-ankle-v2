@@ -30,7 +30,9 @@ const ShoeCard = ({
     ? 'on-sale'
     : isNewShoe(releaseDate)
       ? 'new-release'
-      : 'default'
+      : 'default';
+
+  const isOnSale = variant === 'on-sale';
 
   return (
     <Link href={`/shoe/${slug}`}>
@@ -44,9 +46,9 @@ const ShoeCard = ({
         <Row>
           <Name>{name}</Name>
           <PriceWrapper>
-            {variant === 'on-sale' && <VisuallyHidden>Price was </VisuallyHidden>}
-            <Price>{formatPrice(price)}</Price>
-            {variant === 'on-sale' && <>
+            {isOnSale && <VisuallyHidden>Price was </VisuallyHidden>}
+            <Price isOnSale={isOnSale}>{formatPrice(price)}</Price>
+            {isOnSale && <>
               <VisuallyHidden>, now </VisuallyHidden>
               <SalePrice>{formatPrice(salePrice)}</SalePrice>
             </>}
@@ -93,7 +95,10 @@ const PriceWrapper = styled.div`
   gap: 4px;
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  text-decoration: ${props => props.isOnSale ? 'line-through' : 'none'};
+  color: ${props => props.isOnSale ? COLORS.gray[700] : COLORS.gray[900]};
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
